@@ -5,7 +5,7 @@ class UpdateModal extends React.Component {
   render() {
 
     return (
-
+      <p>this is the update modal</p>
     );
   }
 }
