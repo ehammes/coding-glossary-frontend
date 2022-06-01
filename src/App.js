@@ -51,20 +51,24 @@ class App extends React.Component {
 
   // POST
   addTerm = async (term) => {
-    try {
-      const newTerm = await axios.post(`${API_SERVER}/terms`, term);
-      this.setState({
-        allTerms: [...this.state.allTerms, newTerm.data]
-      })
-    } catch (error) {
-      console.log('There has been an error');
+    if (this.props.auth0.isAuthenticated) {
+      try {
+        const config = this.getConfig('post');
+        const newTerm = await axios(config);
+        this.setState({
+          allTerms: [...this.state.allTerms, newTerm.data]
+        })
+      } catch (error) {
+        console.log('There has been an error');
+      }
     }
   }
 
   // DELETE
   deleteTerm = async (id) => {
     try {
-      await axios.delete(`${API_SERVER}/terms/${id}`);
+      const config = this.getConfig('delete', id)
+      await axios(config);
       let updatedTermsList = this.state.terms.filter(term => term._id !== id)
       this.setState({
         allTerms: updatedTermsList
@@ -91,6 +95,20 @@ class App extends React.Component {
     } catch (error) {
       console.log('There has been an error');
     }
+  }
+
+  async getConfig(method, id) {
+    const res = await this.props.auth0.getIdTokenClaims();
+    const jwt = res.__raw;
+    const config = {
+      method: method,
+      baseURL: process.env.REACT_APP_SERVER,
+      url: `/terms/${id}`,
+      header: {
+        "Authorization": `Bearer ${jwt}`
+      }
+    }
+    return config
   }
 
   updateViewedTerm = (viewedTerm) => {
