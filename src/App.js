@@ -5,6 +5,7 @@ import Header from './Components/Glossary/Header'
 import Main from './Components/Glossary/Main'
 import Footer from './Components/Glossary/Footer'
 import OneTerm from './Components/OneTerm/OneTerm'
+import {withAuth0 } from "@auth0/auth0-react"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {
   BrowserRouter,
@@ -19,7 +20,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       currentTerm: '',
-      allTerms: []
+      allTerms: [],
     }
   }
 
@@ -82,12 +83,13 @@ class App extends React.Component {
   // PUT
   updateTerm = async (termToUpdate) => {
     try {
-      const updatedTerm = await axios.post(`${API_SERVER}/terms/${termToUpdate._id}`, termToUpdate);
-
+      const updatedTerm = await axios.put(`${API_SERVER}/terms/${termToUpdate._id}`, termToUpdate);
+      console.log(updatedTerm.data)
       let newTermsArray = this.state.allTerms.map(existingTerm => {
-        return existingTerm._id === termToUpdate._id
+        return (existingTerm._id === termToUpdate._id
           ? updatedTerm.data
           : existingTerm
+        )
       });
       this.setState({
         allTerms: newTermsArray
@@ -112,15 +114,14 @@ class App extends React.Component {
   }
 
   updateViewedTerm = (viewedTerm) => {
-    console.log(viewedTerm);
     this.setState({
       currentTerm: viewedTerm
     })
 
   }
 
-  async componentDidMount() {
-    await this.getTerms();
+  componentDidMount() {
+    this.getTerms();
   }
 
   render() {
@@ -167,4 +168,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);
