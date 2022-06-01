@@ -1,12 +1,20 @@
-import './App.css';
 import React from 'react';
-
+import axios from 'axios';
+import './App.css';
+import Header from './Components/Glossary/Header'
+import Main from './Components/Glossary/Main'
+import Footer from './Components/Glossary/Footer'
+import OneTerm from './Components/OneTerm/OneTerm'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 const API_SERVER = process.env.REACT_APP_SERVER;
 
 class App extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -20,9 +28,9 @@ class App extends React.Component {
     try {
       const response = await axios.get(`${API_SERVER}/terms`)
       const terms = response.data;
-      this.setState(
-        allTerms = terms
-      )
+      this.setState({
+        allTerms: terms
+      })
     } catch (error) {
       console.log('There has been an error');
     }
@@ -33,9 +41,9 @@ class App extends React.Component {
     try {
       const response = await axios.get(`${API_SERVER}/terms/${id}`);
       const term = response.data; // revisit to make sure this is correct
-      this.setState(
-        currentTerm = term
-      )
+      this.setState({
+        currentTerm: term
+      })
     } catch (error) {
       console.log('There has been an error');
     }
@@ -85,6 +93,14 @@ class App extends React.Component {
     }
   }
 
+  updateViewedTerm = (viewedTerm) => {
+    console.log(viewedTerm);
+    this.setState({
+      currentTerm: viewedTerm
+    })
+
+  }
+
   async componentDidMount() {
     await this.getTerms();
   }
@@ -92,16 +108,43 @@ class App extends React.Component {
   render() {
 
     return (
-
-      // set up route for Main, Header, Footer
-<Main />
-<Header />
-<Footer />
-
-
-      <Route exact path="/terms">
-        <OneTerm term={this.state.currentTerm} deleteTerm={this.deleteTerm} />
-      </Route>
+      <BrowserRouter>
+        <div>
+          <Routes>
+            <Route
+              exact path="/"
+              element=
+              {
+                <>
+                  <Header />
+                  <Main
+                    allTerms={this.state.allTerms}
+                    addTerm={this.addTerm}
+                    currentTerm={this.state.currentTerm}
+                    updateTerm={this.updateTerm}
+                    deleteTerm={this.deleteTerm}
+                    updateViewedTerm={this.updateViewedTerm}
+                  />
+                  <Footer />
+                </>
+              }
+            >
+            </Route>
+            <Route
+              path="/oneTerm"
+              element=
+              {
+                <OneTerm
+                  currentTerm={this.state.currentTerm}
+                  updateTerm={this.updateTerm}
+                  deleteTerm={this.deleteTerm}
+                />
+              }
+            >
+            </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
     );
   }
 }
