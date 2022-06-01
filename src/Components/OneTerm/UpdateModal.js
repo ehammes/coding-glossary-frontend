@@ -17,6 +17,12 @@ class UpdateModal extends React.Component {
     this.props.closeModalHandler();
   }
 
+  deleteTermHandler = (e) => {
+    e.preventDefault();
+    let id = this.props.currentTerm._id;
+    this.props.deleteTerm(id);
+  } 
+
   render() {
 
     return (
@@ -42,10 +48,20 @@ class UpdateModal extends React.Component {
                 <Form.Label>Resource Link</Form.Label>
                 <Form.Control type="text" id="documentation_url" defaultValue={this.props.currentTerm.documentation_url} />
               </Form.Group>
-              <Button variant="primary" type="submit">Submit</Button>
+              <Button 
+                variant="primary" 
+                type="submit"
+              >
+                Submit
+              </Button>
+              <Button 
+                variant="danger"
+                onClick={this.deleteTermHandler}
+              >
+                Delete
+              </Button>
             </Form>
             <Modal.Footer>
-
             </Modal.Footer>
           </Modal.Body>
         </Modal>
