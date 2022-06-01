@@ -93,6 +93,14 @@ class App extends React.Component {
     }
   }
 
+  updateViewedTerm = (viewedTerm) => {
+    console.log(viewedTerm);
+    this.setState({
+      currentTerm: viewedTerm
+    })
+
+  }
+
   async componentDidMount() {
     await this.getTerms();
   }
@@ -103,11 +111,11 @@ class App extends React.Component {
       <BrowserRouter>
         <div>
           <Routes>
-            <Route 
+            <Route
               exact path="/"
               element=
-                {
-                  <>
+              {
+                <>
                   <Header />
                   <Main
                     allTerms={this.state.allTerms}
@@ -115,11 +123,24 @@ class App extends React.Component {
                     currentTerm={this.state.currentTerm}
                     updateTerm={this.updateTerm}
                     deleteTerm={this.deleteTerm}
+                    updateViewedTerm={this.updateViewedTerm}
                   />
                   <Footer />
-                  </>
-                }
-            >   
+                </>
+              }
+            >
+            </Route>
+            <Route
+              path="/oneTerm"
+              element=
+              {
+                <OneTerm
+                  currentTerm={this.state.currentTerm}
+                  updateTerm={this.updateTerm}
+                  deleteTerm={this.deleteTerm}
+                />
+              }
+            >
             </Route>
           </Routes>
         </div>
