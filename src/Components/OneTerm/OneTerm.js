@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { withAuth0 } from "@auth0/auth0-react"
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -9,10 +10,23 @@ import './OneTerm.css';
 class OneTerm extends React.Component {
   constructor(props) {
     super(props);
+    this.getOneTerm(window.location.href.split('/')[3]);
     this.state = {
       isModalDisplaying: false,
     }
   }
+
+  getOneTerm = async (term_name) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER}/terms?term_name=${term_name}`);
+      const term = response.data; // revisit to make sure this is correct
+      this.setState({
+        currentTerm: term[0]
+      })
+    } catch (error) {
+      console.log('There has been an error');
+    }
+  };
 
   openModalHandler = () => {
     this.setState({
@@ -28,16 +42,17 @@ class OneTerm extends React.Component {
   };
 
   render() {
-    return (
-      <>
-        <Header />
-        <section className="term">
-          <h1 className="term-title">{this.props.currentTerm.term_name}</h1>
-          <hr/>
-          <p className="supporting-text">{this.props.currentTerm.definition}</p>
-          <p className="supporting-text">{this.props.currentTerm.documentation_url}</p>
-        </section>
-        <section className="update-button">
+    if (this.state.currentTerm) {
+      return (
+        <>
+          <Header />
+          <section className="term">
+            <h1 className="term-title">{this.state.currentTerm.term_name}</h1>
+            <hr/>
+            <p className="supporting-text">{this.state.currentTerm.definition}</p>
+            <p className="supporting-text">{this.state.currentTerm.documentation_url}</p>
+          </section>
+          <section className="update-button">
           {this.props.auth0.isAuthenticated &&
             <>
               <Button
@@ -48,23 +63,26 @@ class OneTerm extends React.Component {
               </Button>
               <UpdateModal
                 isModalDisplaying={this.state.isModalDisplaying}
-                currentTerm={this.props.currentTerm}
+                currentTerm={this.state.currentTerm}
                 updateTerm={this.props.updateTerm}
                 deleteTerm={this.props.deleteTerm}
                 closeModalHandler={this.closeModalHandler}
               />
             </>
           }
-        </section>
-        <section className="view-button">
-          <Link to="/">
-            <Button type="button">
-              View All Terms
-            </Button>
-          </Link>
-        </section>
-      </>
-    );
+          </section>
+          <section className="view-button">
+            <Link to="/">
+              <Button type="button">
+                View All Terms
+              </Button>
+            </Link>
+          </section>
+        </>
+      );
+    } else {
+      <h3>Term not found</h3>
+    }
   }
 }
 

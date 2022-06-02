@@ -9,8 +9,7 @@ class Term extends React.Component {
     return (
       <Link
         className="term-link"
-        onClick={() => { this.props.updateViewedTerm(this.props.term) }}
-        to="/oneTerm">
+        to={`/${this.props.term.term_name}`}>
         <ListGroup.Item 
           className="list-group-item" 
           action
