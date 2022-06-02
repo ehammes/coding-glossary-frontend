@@ -28,10 +28,15 @@ class OneTerm extends React.Component {
     }
   };
 
+  updateViewedTerm = (term) => {
+    this.setState({
+      currentTerm: term,
+    });
+  }
+
   openModalHandler = () => {
     this.setState({
       isModalDisplaying: true,
-
     });
   };
 
@@ -65,6 +70,7 @@ class OneTerm extends React.Component {
                 isModalDisplaying={this.state.isModalDisplaying}
                 currentTerm={this.state.currentTerm}
                 updateTerm={this.props.updateTerm}
+                updateViewedTerm={this.updateViewedTerm}
                 deleteTerm={this.props.deleteTerm}
                 closeModalHandler={this.closeModalHandler}
               />

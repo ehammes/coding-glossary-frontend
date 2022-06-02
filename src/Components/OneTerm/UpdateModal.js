@@ -21,6 +21,7 @@ const UpdateModal = (props) => {
     let success = await props.updateTerm(termToUpdate);
     if (success) {
       props.closeModalHandler();
+      await props.updateViewedTerm(termToUpdate);
       navigate(`/${e.target.term_name.value.replace(/ /g, '%20')}`);
     }
   }
