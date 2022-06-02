@@ -63,11 +63,11 @@ class App extends React.Component {
       } catch (error) {
         if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
           if (error.response.data.term_name_errors && error.response.data.definition_errors) {
-            this.askUserToOverride(term, error.response.data.term_name_errors, error.response.data.definition_errors)
+            this.askUserToOverride(term, true, error.response.data.term_name_errors, error.response.data.definition_errors)
           } else if (error.response.data.term_name_errors) {
-            this.askUserToOverride(term, error.response.data.term_name_errors)
+            this.askUserToOverride(term, true, error.response.data.term_name_errors)
           } else {
-            this.askUserToOverride(term, error.response.data.definition_errors)
+            this.askUserToOverride(term, true, error.response.data.definition_errors)
           }
         } else {
           console.log('There has been an error ', error);
@@ -78,7 +78,7 @@ class App extends React.Component {
     }
   }
 
-  askUserToOverride(term, arr1, arr2) {
+  askUserToOverride(term, add, arr1, arr2) {
     let firstIteration = true;
     let arr1Misspells = arr1.reduce((misspellingList, word) => {
       if (firstIteration) {
@@ -109,7 +109,11 @@ class App extends React.Component {
     let user_response = window.confirm(confirmationString);
     if (user_response) {
       term.override = true;
-      this.addTerm(term);
+      if (add) {
+        this.addTerm(term);
+      } else {
+        this.updateTerm(term);
+      }
     }
   }
 
@@ -138,6 +142,8 @@ class App extends React.Component {
       try {
         const config = await this.getConfig('put', termToUpdate._id, termToUpdate);
         const updatedTerm = await axios(config);
+        console.log('updatedTerm ', updatedTerm.data);
+        console.log('termToUpdate', termToUpdate);
         let newTermsArray = this.state.allTerms.map(existingTerm => {
           return (existingTerm._id === termToUpdate._id
             ? updatedTerm.data
@@ -145,10 +151,22 @@ class App extends React.Component {
           )
         });
         this.setState({
-          allTerms: newTermsArray
+          allTerms: newTermsArray,
+          currentTerm: termToUpdate
         })
       } catch (error) {
-        console.log('There has been an error');
+        console.log('error ', error);
+        if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
+          if (error.response.data.term_name_errors && error.response.data.definition_errors) {
+            this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, error.response.data.definition_errors)
+          } else if (error.response.data.term_name_errors) {
+            this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors)
+          } else {
+            this.askUserToOverride(termToUpdate, false, error.response.data.definition_errors)
+          }
+        } else {
+          console.log('There has been an error ', error);
+        }
       }
     } else {
       console.log('Please login for this functionality');
