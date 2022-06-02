@@ -1,6 +1,8 @@
-# Code Fellows 301 - Final Project
+# Code Fellows 301 - Final Project - Software Glossary App
 
-## Glossary App
+## Deployed Site
+
+[https://comforting-caramel-46654a.netlify.app/](https://comforting-caramel-46654a.netlify.app/)
 
 ## Members
 
