@@ -10,7 +10,6 @@ import './OneTerm.css';
 class OneTerm extends React.Component {
   constructor(props) {
     super(props);
-    this.getOneTerm(window.location.href.split('/')[3]);
     this.state = {
       isModalDisplaying: false,
     }
@@ -27,6 +26,10 @@ class OneTerm extends React.Component {
       console.log('There has been an error');
     }
   };
+
+  componentDidMount() {
+    this.getOneTerm(window.location.href.split('/')[3]);
+  }
 
   updateViewedTerm = (term) => {
     this.setState({
@@ -53,29 +56,29 @@ class OneTerm extends React.Component {
           <Header />
           <section className="term">
             <h1 className="term-title">{this.state.currentTerm.term_name}</h1>
-            <hr/>
+            <hr />
             <p className="supporting-text">{this.state.currentTerm.definition}</p>
             <p className="supporting-text">{this.state.currentTerm.documentation_url}</p>
           </section>
           <section className="update-button">
-          {this.props.auth0.isAuthenticated &&
-            <>
-              <Button
-                type="button"
-                onClick={this.openModalHandler}
-              >
-                Update Term
-              </Button>
-              <UpdateModal
-                isModalDisplaying={this.state.isModalDisplaying}
-                currentTerm={this.state.currentTerm}
-                updateTerm={this.props.updateTerm}
-                updateViewedTerm={this.updateViewedTerm}
-                deleteTerm={this.props.deleteTerm}
-                closeModalHandler={this.closeModalHandler}
-              />
-            </>
-          }
+            {this.props.auth0.isAuthenticated &&
+              <>
+                <Button
+                  type="button"
+                  onClick={this.openModalHandler}
+                >
+                  Update Term
+                </Button>
+                <UpdateModal
+                  isModalDisplaying={this.state.isModalDisplaying}
+                  currentTerm={this.state.currentTerm}
+                  updateTerm={this.props.updateTerm}
+                  updateViewedTerm={this.updateViewedTerm}
+                  deleteTerm={this.props.deleteTerm}
+                  closeModalHandler={this.closeModalHandler}
+                />
+              </>
+            }
           </section>
           <section className="view-button">
             <Link to="/">
