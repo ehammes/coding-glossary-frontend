@@ -1,7 +1,7 @@
 import React from 'react';
+import { withAuth0 } from "@auth0/auth0-react"
 import './Main.css';
 import AddModal from './AddModal'
-// import OneTerm from '../OneTerm/OneTerm'
 import Term from './Term'
 import { ListGroup, Button } from 'react-bootstrap'
 
@@ -33,28 +33,31 @@ class Main extends React.Component {
         updateViewedTerm={this.props.updateViewedTerm}
       />
     )
-    console.log(termItem);
 
     return (
       <>
         <h1>Glossary of Terms Code301</h1>
-        <Button
-          type="button"
-          onClick={this.addTermModalHandler}
-        >
-          Add New Term
-        </Button>
+        {this.props.auth0.isAuthenticated &&
+          <Button
+            type="button"
+            onClick={this.addTermModalHandler}
+          >
+            Add New Term
+          </Button>
+        }
         <ListGroup>
           {termItem}
         </ListGroup>
-        <AddModal
-          isAddTermModalDisplaying={this.state.isAddTermModalDisplaying}
-          closeAddTermModalHandler={this.closeAddTermModalHandler}
-          addTerm={this.props.addTerm}
-        />
+        {this.props.auth0.isAuthenticated &&
+          <AddModal
+            isAddTermModalDisplaying={this.state.isAddTermModalDisplaying}
+            closeAddTermModalHandler={this.closeAddTermModalHandler}
+            addTerm={this.props.addTerm}
+          />
+        }
       </>
     );
   }
 }
 
-export default Main;
+export default withAuth0(Main);

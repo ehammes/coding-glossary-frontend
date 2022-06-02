@@ -5,7 +5,7 @@ import Header from './Components/Glossary/Header'
 import Main from './Components/Glossary/Main'
 import Footer from './Components/Glossary/Footer'
 import OneTerm from './Components/OneTerm/OneTerm'
-import {withAuth0 } from "@auth0/auth0-react"
+import { withAuth0 } from "@auth0/auth0-react"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {
   BrowserRouter,
@@ -54,63 +54,81 @@ class App extends React.Component {
   addTerm = async (term) => {
     if (this.props.auth0.isAuthenticated) {
       try {
-        const config = this.getConfig('post');
+        const config = await this.getConfig('post', undefined, term);
         const newTerm = await axios(config);
         this.setState({
           allTerms: [...this.state.allTerms, newTerm.data]
-        })
+        });
       } catch (error) {
         console.log('There has been an error');
       }
+    } else {
+      console.log('Please login for this functionality');
     }
   }
 
   // DELETE
   deleteTerm = async (id) => {
-    try {
-      const config = this.getConfig('delete', id)
-      await axios(config);
-      let updatedTermsList = this.state.terms.filter(term => term._id !== id)
-      this.setState({
-        allTerms: updatedTermsList
-      })
-    } catch (error) {
-      console.log('There has been an error');
+    if (this.props.auth0.isAuthenticated) {
+      try {
+        const config = await this.getConfig('delete', id)
+        await axios(config);
+        let updatedTermsList = this.state.allTerms.filter(term => term._id !== id)
+        console.log('I updated the Terms List');
+        this.setState({
+          allTerms: updatedTermsList
+        })
+      } catch (error) {
+        console.log('There has been an error', error);
+      }
+    } else {
+      console.log('Please login for this functionality');
     }
   }
-
 
   // PUT
   updateTerm = async (termToUpdate) => {
-    try {
-      const updatedTerm = await axios.put(`${API_SERVER}/terms/${termToUpdate._id}`, termToUpdate);
-      console.log(updatedTerm.data)
-      let newTermsArray = this.state.allTerms.map(existingTerm => {
-        return (existingTerm._id === termToUpdate._id
-          ? updatedTerm.data
-          : existingTerm
-        )
-      });
-      this.setState({
-        allTerms: newTermsArray
-      })
-    } catch (error) {
-      console.log('There has been an error');
+    if (this.props.auth0.isAuthenticated) {
+      try {
+        const config = await this.getConfig('put', termToUpdate._id, termToUpdate);
+        const updatedTerm = await axios(config);
+        let newTermsArray = this.state.allTerms.map(existingTerm => {
+          return (existingTerm._id === termToUpdate._id
+            ? updatedTerm.data
+            : existingTerm
+          )
+        });
+        this.setState({
+          allTerms: newTermsArray
+        })
+      } catch (error) {
+        console.log('There has been an error');
+      }
+    } else {
+      console.log('Please login for this functionality');
     }
   }
 
-  async getConfig(method, id) {
+  async getConfig(method, id, body) {
     const res = await this.props.auth0.getIdTokenClaims();
     const jwt = res.__raw;
     const config = {
       method: method,
       baseURL: process.env.REACT_APP_SERVER,
-      url: `/terms/${id}`,
-      header: {
+      headers: {
         "Authorization": `Bearer ${jwt}`
       }
     }
-    return config
+    if (body) {
+      config.data = body;
+    }
+    if (id !== undefined) {
+      config.url = `/terms/${id}`;
+    } else {
+      config.url = '/terms';
+    }
+    console.log('config ', config)
+    return config;
   }
 
   updateViewedTerm = (viewedTerm) => {
