@@ -120,7 +120,7 @@ class App extends React.Component {
         const config = await this.getConfig('delete', id)
         await axios(config);
         let updatedTermsList = this.state.allTerms.filter(term => term._id !== id)
-        console.log('I updated the Terms List');
+        console.log('Term deleted');
         this.setState({
           allTerms: updatedTermsList
         })
