@@ -37,19 +37,6 @@ class App extends React.Component {
     }
   }
 
-  // GET ONE
-  // getOneTerm = async (term_name) => {
-  //   try {
-  //     const response = await axios.get(`${API_SERVER}/terms?${term_name}`);
-  //     const term = response.data; // revisit to make sure this is correct
-  //     this.setState({
-  //       currentTerm: term
-  //     })
-  //   } catch (error) {
-  //     console.log('There has been an error');
-  //   }
-  // }
-
   // POST
   addTerm = async (term) => {
     if (this.props.auth0.isAuthenticated) {
@@ -236,6 +223,11 @@ class App extends React.Component {
                   <Footer />
                 </>
               }
+            >
+            </Route>
+            <Route
+              path="/aboutUs"
+              element={<AboutUs />}
             >
             </Route>
             {allTerms}

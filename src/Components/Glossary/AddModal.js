@@ -41,7 +41,7 @@ const AddModal = (props) => {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Resource Link</Form.Label>
-              <Form.Control type="text" id="documentation_url" placeholder="https://" />
+              <Form.Control type="text" id="documentation_url" placeholder="www." />
             </Form.Group>
             <Button
               variant="primary"
