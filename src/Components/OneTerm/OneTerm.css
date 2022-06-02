@@ -1,0 +1,23 @@
+.term {
+  margin: 10% 20% 3% 15%;
+}
+
+.term-title {
+  margin-bottom: 2%;
+  font-size: 60px;
+}
+
+.supporting-text {
+  margin-bottom: 2%;
+  font-size: 28px;
+}
+
+.update-button {
+  margin-left:15%;
+  margin-bottom: 1%;
+}
+
+.view-button {
+  margin-left:15%;
+}
+

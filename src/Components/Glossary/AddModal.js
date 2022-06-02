@@ -50,7 +50,7 @@ const AddModal = (props) => {
               Submit
             </Button>
             <Button
-              variant="secondary"
+              variant="outline-secondary"
               onClick={props.closeAddTermModalHandler}
             >
               Cancel
