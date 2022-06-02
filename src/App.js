@@ -38,17 +38,17 @@ class App extends React.Component {
   }
 
   // GET ONE
-  getOneTerm = async (id) => {
-    try {
-      const response = await axios.get(`${API_SERVER}/terms/${id}`);
-      const term = response.data; // revisit to make sure this is correct
-      this.setState({
-        currentTerm: term
-      })
-    } catch (error) {
-      console.log('There has been an error');
-    }
-  }
+  // getOneTerm = async (term_name) => {
+  //   try {
+  //     const response = await axios.get(`${API_SERVER}/terms?${term_name}`);
+  //     const term = response.data; // revisit to make sure this is correct
+  //     this.setState({
+  //       currentTerm: term
+  //     })
+  //   } catch (error) {
+  //     console.log('There has been an error');
+  //   }
+  // }
 
   // POST
   addTerm = async (term) => {
@@ -231,11 +231,10 @@ class App extends React.Component {
             >
             </Route>
             <Route
-              path="/oneTerm"
+              path={`/${this.state.currentTerm.term_name}`}
               element=
               {
                 <OneTerm
-                  currentTerm={this.state.currentTerm}
                   updateTerm={this.updateTerm}
                   deleteTerm={this.deleteTerm}
                 />
