@@ -30,7 +30,6 @@ class Main extends React.Component {
       <Term
         key={term._id}
         term={term}
-        updateViewedTerm={this.props.updateViewedTerm}
       />
     )
 
