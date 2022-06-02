@@ -12,6 +12,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import AboutUs from './Components/AboutUs/AboutUs';
 
 const API_SERVER = process.env.REACT_APP_SERVER;
 
