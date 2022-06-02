@@ -56,14 +56,60 @@ class App extends React.Component {
       try {
         const config = await this.getConfig('post', undefined, term);
         const newTerm = await axios(config);
+        console.log(newTerm);
         this.setState({
           allTerms: [...this.state.allTerms, newTerm.data]
         });
       } catch (error) {
-        console.log('There has been an error');
+        if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
+          if (error.response.data.term_name_errors && error.response.data.definition_errors) {
+            this.askUserToOverride(term, error.response.data.term_name_errors, error.response.data.definition_errors)
+          } else if (error.response.data.term_name_errors) {
+            this.askUserToOverride(term, error.response.data.term_name_errors)
+          } else {
+            this.askUserToOverride(term, error.response.data.definition_errors)
+          }
+        } else {
+          console.log('There has been an error ', error);
+        }
       }
     } else {
       console.log('Please login for this functionality');
+    }
+  }
+
+  askUserToOverride(term, arr1, arr2) {
+    let firstIteration = true;
+    let arr1Misspells = arr1.reduce((misspellingList, word) => {
+      if (firstIteration) {
+        firstIteration = false;
+        return word.word;
+      } else {
+        return `${misspellingList}, ${word.word}`;
+      }
+    }, '');
+    firstIteration = true;
+    let arr2Misspells;
+    if (arr2) {
+      arr2Misspells = arr2.reduce((misspellingList, word) => {
+        if (firstIteration) {
+          firstIteration = false;
+          return word.word;
+        } else {
+          return `${misspellingList}, ${word.word}`;
+        }
+      }, '');
+    }
+    let confirmationString;
+    if (arr2) {
+      confirmationString = `You spelled the following words incorrectly\n\n${arr1Misspells}, ${arr2Misspells}\n\n Press OK if you would like to override and submit as is`
+    } else {
+      confirmationString = `You spelled the following words incorrectly\n\n${arr1Misspells}\n\n Press OK if you would like to override and submit as is`
+    }
+    let user_response = window.confirm(confirmationString);
+    if (user_response) {
+      term.override = true;
+      this.addTerm(term);
     }
   }
 
@@ -127,7 +173,6 @@ class App extends React.Component {
     } else {
       config.url = '/terms';
     }
-    console.log('config ', config)
     return config;
   }
 
