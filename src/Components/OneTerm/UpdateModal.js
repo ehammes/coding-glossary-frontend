@@ -2,21 +2,27 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom'
+import { useAuth0 } from "@auth0/auth0-react"
 
 
 const UpdateModal = (props) => {
 
-  const handleTermSubmit = (e) => {
+  const { user } = useAuth0();
+  const handleTermSubmit = async (e) => {
     e.preventDefault();
     let termToUpdate = {
       term_name: e.target.term_name.value || props.currentTerm.term_name,
       definition: e.target.definition.value || props.currentTerm.definition,
       documentation_url: e.target.documentation_url.value || props.currentTerm.documentation_url,
+      user_email: user.email,
       _id: props.currentTerm._id,
       __v: props.currentTerm.__v
     }
-    props.updateTerm(termToUpdate);
-    props.closeModalHandler();
+    let success = await props.updateTerm(termToUpdate);
+    if (success) {
+      props.closeModalHandler();
+      navigate(`/${e.target.term_name.value.replace(/ /g, '%20')}`);
+    }
   }
 
   const navigate = useNavigate();
