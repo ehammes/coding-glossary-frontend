@@ -11,9 +11,9 @@ const UpdateModal = (props) => {
   const handleTermSubmit = async (e) => {
     e.preventDefault();
     let termToUpdate = {
-      term_name: e.target.term_name.value || props.currentTerm.term_name,
-      definition: e.target.definition.value || props.currentTerm.definition,
-      documentation_url: e.target.documentation_url.value || props.currentTerm.documentation_url,
+      term_name: e.target.term_name.value,
+      definition: e.target.definition.value,
+      documentation_url: e.target.documentation_url.value,
       user_email: user.email,
       _id: props.currentTerm._id,
       __v: props.currentTerm.__v
@@ -21,7 +21,7 @@ const UpdateModal = (props) => {
     let success = await props.updateTerm(termToUpdate);
     if (success) {
       props.closeModalHandler();
-      await props.updateViewedTerm(termToUpdate);
+      props.updateViewedTerm(termToUpdate);
       navigate(`/${e.target.term_name.value.replace(/ /g, '%20')}`);
     }
   }
