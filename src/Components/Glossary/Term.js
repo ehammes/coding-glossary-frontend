@@ -7,7 +7,6 @@ class Term extends React.Component {
   render() {
     return (
       <Link
-        onClick={() => { this.props.updateViewedTerm(this.props.term) }}
         to={`/${this.props.term.term_name}`}>
         <ListGroup.Item
           key={this.props.term._id}

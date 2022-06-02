@@ -40,8 +40,6 @@ class OneTerm extends React.Component {
 
   render() {
     if (this.state.currentTerm) {
-      console.log(this.state.currentTerm);
-      console.log('currentTerm in if statement: ', this.state.currentTerm.term_name);
       return (
         <>
           <ul>

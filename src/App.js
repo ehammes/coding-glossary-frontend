@@ -19,7 +19,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTerm: '',
       allTerms: [],
     }
   }
@@ -56,7 +55,6 @@ class App extends React.Component {
       try {
         const config = await this.getConfig('post', undefined, term);
         const newTerm = await axios(config);
-        console.log(newTerm);
         this.setState({
           allTerms: [...this.state.allTerms, newTerm.data]
         });
@@ -112,9 +110,10 @@ class App extends React.Component {
       if (add) {
         this.addTerm(term);
       } else {
-        this.updateTerm(term);
+        return this.updateTerm(term);
       }
     }
+    return false;
   }
 
   // DELETE
@@ -124,7 +123,6 @@ class App extends React.Component {
         const config = await this.getConfig('delete', id)
         await axios(config);
         let updatedTermsList = this.state.allTerms.filter(term => term._id !== id)
-        console.log('Term deleted');
         this.setState({
           allTerms: updatedTermsList
         })
@@ -142,8 +140,6 @@ class App extends React.Component {
       try {
         const config = await this.getConfig('put', termToUpdate._id, termToUpdate);
         const updatedTerm = await axios(config);
-        console.log('updatedTerm ', updatedTerm.data);
-        console.log('termToUpdate', termToUpdate);
         let newTermsArray = this.state.allTerms.map(existingTerm => {
           return (existingTerm._id === termToUpdate._id
             ? updatedTerm.data
@@ -152,17 +148,17 @@ class App extends React.Component {
         });
         this.setState({
           allTerms: newTermsArray,
-          currentTerm: termToUpdate
         })
+        return true
       } catch (error) {
         console.log('error ', error);
         if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
           if (error.response.data.term_name_errors && error.response.data.definition_errors) {
-            this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, error.response.data.definition_errors)
+            return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, error.response.data.definition_errors)
           } else if (error.response.data.term_name_errors) {
-            this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors)
+            return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors)
           } else {
-            this.askUserToOverride(termToUpdate, false, error.response.data.definition_errors)
+            return this.askUserToOverride(termToUpdate, false, error.response.data.definition_errors)
           }
         } else {
           console.log('There has been an error ', error);
@@ -171,6 +167,7 @@ class App extends React.Component {
     } else {
       console.log('Please login for this functionality');
     }
+    return false;
   }
 
   async getConfig(method, id, body) {
@@ -194,18 +191,30 @@ class App extends React.Component {
     return config;
   }
 
-  updateViewedTerm = (viewedTerm) => {
-    this.setState({
-      currentTerm: viewedTerm
-    })
-
-  }
-
   componentDidMount() {
     this.getTerms();
   }
 
   render() {
+
+    let allTerms = <></>;
+    if (this.state.allTerms) {
+      allTerms = this.state.allTerms.map(term => {
+        return (<Route
+          key={term._id}
+          path={`/${term.term_name.replace(/ /g, '%20')}`}
+          element=
+          {
+            <OneTerm
+              updateTerm={this.updateTerm}
+              deleteTerm={this.deleteTerm}
+            />
+          }
+        >
+        </Route>
+        )
+      });
+    }
 
     return (
       <BrowserRouter>
@@ -220,27 +229,15 @@ class App extends React.Component {
                   <Main
                     allTerms={this.state.allTerms}
                     addTerm={this.addTerm}
-                    currentTerm={this.state.currentTerm}
                     updateTerm={this.updateTerm}
                     deleteTerm={this.deleteTerm}
-                    updateViewedTerm={this.updateViewedTerm}
                   />
                   <Footer />
                 </>
               }
             >
             </Route>
-            <Route
-              path={`/${this.state.currentTerm.term_name}`}
-              element=
-              {
-                <OneTerm
-                  updateTerm={this.updateTerm}
-                  deleteTerm={this.deleteTerm}
-                />
-              }
-            >
-            </Route>
+            {allTerms}
           </Routes>
         </div>
       </BrowserRouter>
