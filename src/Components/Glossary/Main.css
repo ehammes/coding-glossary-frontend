@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.main-heading {
+  margin-left: 15%;
+  margin-top: 10%;
+  font-size: 64px
+}
+
+.add-button {
+  margin: 1%;
+  margin-right: 15%
+}
+
+.list-group {
+  margin: 2% 65% 0% 15%;
+}
+
+.list-group-item {
+  font-size: 24px;
+}
+
+.hr {
+  margin: 0% 15% 0% 15%
+}
+
+.main-div {
+  margin-bottom: 5%;
+}

@@ -34,17 +34,23 @@ class Main extends React.Component {
     )
 
     return (
-      <>
-        <h1>Glossary of Terms Code301</h1>
-        {this.props.auth0.isAuthenticated &&
-          <Button
-            type="button"
-            onClick={this.addTermModalHandler}
-          >
-            Add New Term
-          </Button>
-        }
-        <ListGroup>
+      <div className="main-div">
+        <section className="header">
+          <h1 className="main-heading">Code Fellows Glossary</h1>
+          {this.props.auth0.isAuthenticated &&
+            <Button
+              className="add-button"
+              type="button"
+              onClick={this.addTermModalHandler}
+            >
+              Add New Term
+            </Button>
+          }
+        </section>
+        <hr className="hr"/>
+        <ListGroup
+          className="list-group"
+        >
           {termItem}
         </ListGroup>
         {this.props.auth0.isAuthenticated &&
@@ -54,7 +60,7 @@ class Main extends React.Component {
             addTerm={this.props.addTerm}
           />
         }
-      </>
+      </div>
     );
   }
 }

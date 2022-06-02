@@ -2,7 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import { withAuth0 } from "@auth0/auth0-react"
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import UpdateModal from './UpdateModal';
+import Header from '../Glossary/Header'
+import './OneTerm.css';
 
 class OneTerm extends React.Component {
   constructor(props) {
@@ -42,13 +45,14 @@ class OneTerm extends React.Component {
     if (this.state.currentTerm) {
       return (
         <>
-          <ul>
-            <li>key={this.state.currentTerm._id}</li>
-            <li>term_name={this.state.currentTerm.term_name}</li>
-            <li>definition={this.state.currentTerm.definition}</li>
-            <li>user_email={this.state.currentTerm.user_email}</li>
-            <li>documentation_url={this.state.currentTerm.docum}</li>
-          </ul>
+          <Header />
+          <section className="term">
+            <h1 className="term-title">{this.state.currentTerm.term_name}</h1>
+            <hr/>
+            <p className="supporting-text">{this.state.currentTerm.definition}</p>
+            <p className="supporting-text">{this.state.currentTerm.documentation_url}</p>
+          </section>
+          <section className="update-button">
           {this.props.auth0.isAuthenticated &&
             <>
               <Button
@@ -66,6 +70,14 @@ class OneTerm extends React.Component {
               />
             </>
           }
+          </section>
+          <section className="view-button">
+            <Link to="/">
+              <Button type="button">
+                View All Terms
+              </Button>
+            </Link>
+          </section>
         </>
       );
     } else {
