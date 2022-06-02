@@ -1,5 +1,6 @@
 import React from 'react';
-import { ListGroup } from 'react-bootstrap'
+import './Term.css';
+import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class Term extends React.Component {
@@ -7,9 +8,11 @@ class Term extends React.Component {
   render() {
     return (
       <Link
-        onClick={() => { this.props.updateViewedTerm(this.props.term) }}
-        to="/oneTerm">
-        <ListGroup.Item
+        className="term-link"
+        to={`/${this.props.term.term_name}`}>
+        <ListGroup.Item 
+          className="list-group-item" 
+          action
           key={this.props.term._id}
           term_name={this.props.term.term_name}
           definition={this.props.term.definition}
