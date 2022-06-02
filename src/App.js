@@ -184,26 +184,6 @@ class App extends React.Component {
   }
 
   render() {
-
-    let allTerms = <></>;
-    if (this.state.allTerms) {
-      allTerms = this.state.allTerms.map(term => {
-        return (<Route
-          key={term._id}
-          path={`/${term.term_name.replace(/ /g, '%20')}`}
-          element=
-          {
-            <OneTerm
-              updateTerm={this.updateTerm}
-              deleteTerm={this.deleteTerm}
-            />
-          }
-        >
-        </Route>
-        )
-      });
-    }
-
     return (
       <BrowserRouter>
         <div>
@@ -230,7 +210,17 @@ class App extends React.Component {
               element={<AboutUs />}
             >
             </Route>
-            {allTerms}
+            <Route
+              path={"/:termId"}
+              element=
+              {
+                <OneTerm
+                  updateTerm={this.updateTerm}
+                  deleteTerm={this.deleteTerm}
+                />
+              }
+            >
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
