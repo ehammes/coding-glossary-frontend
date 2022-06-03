@@ -2,8 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Header from './Components/Glossary/Header'
+import AboutUs from './Components/AboutUs/AboutUs';
 import Main from './Components/Glossary/Main'
-import Footer from './Components/Glossary/Footer'
 import OneTerm from './Components/OneTerm/OneTerm'
 import { withAuth0 } from "@auth0/auth0-react"
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -12,7 +12,6 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import AboutUs from './Components/AboutUs/AboutUs';
 
 const API_SERVER = process.env.REACT_APP_SERVER;
 
@@ -200,7 +199,6 @@ class App extends React.Component {
                     updateTerm={this.updateTerm}
                     deleteTerm={this.deleteTerm}
                   />
-                  <Footer />
                 </>
               }
             >

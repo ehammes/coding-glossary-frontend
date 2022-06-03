@@ -1,3 +1,7 @@
+.main-div {
+  margin-bottom: 5%;
+}
+
 .header {
   display: flex;
   flex-direction: row;
@@ -5,9 +9,13 @@
   justify-content: space-between;
 }
 
+.logo {
+  width: 5%;
+  margin: 4% 0% 2% 15%;
+}
+
 .main-heading {
   margin-left: 15%;
-  margin-top: 10%;
   font-size: 64px
 }
 
@@ -17,7 +25,7 @@
 }
 
 .list-group {
-  margin: 2% 65% 0% 15%;
+  margin: 2% 60% 0% 15%;
 }
 
 .list-group-item {
@@ -26,8 +34,4 @@
 
 .hr {
   margin: 0% 15% 0% 15%
-}
-
-.main-div {
-  margin-bottom: 5%;
 }
