@@ -32,19 +32,33 @@ const AddModal = (props) => {
           <Form onSubmit={handleTermSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Term Name</Form.Label>
-              <Form.Control type="text" id="term_name" required/>
+              <Form.Control 
+                type="text" 
+                id="term_name" 
+                required
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Definition</Form.Label>
-              <Form.Control type="text" id="definition" required/>
+              <Form.Control 
+                type="text" 
+                id="definition"
+                as="textarea"
+                required
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Resource Link</Form.Label>
-              <Form.Control type="text" id="documentation_url" placeholder="www." />
+              <Form.Control 
+                type="text" 
+                id="documentation_url" 
+                placeholder="www." 
+              />
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
+              className="submit-button"
             >
               Submit
             </Button>
@@ -55,8 +69,6 @@ const AddModal = (props) => {
               Cancel
             </Button>
           </Form>
-          <Modal.Footer>
-          </Modal.Footer>
         </Modal.Body>
       </Modal>
     </>

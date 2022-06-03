@@ -17,3 +17,7 @@
 .navbar div:last-of-type {
   margin-right: 30px;
 }
+
+.submit-button {
+  margin-right: 2%
+}

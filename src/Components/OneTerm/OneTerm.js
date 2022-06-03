@@ -82,7 +82,10 @@ class OneTerm extends React.Component {
           </section>
           <section className="view-button">
             <Link to="/">
-              <Button type="button">
+              <Button 
+                type="button" 
+                variant="outline-primary"
+              >
                 View All Terms
               </Button>
             </Link>
