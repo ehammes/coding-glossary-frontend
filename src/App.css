@@ -14,10 +14,19 @@
   margin-left: 10%;
 }
 
-.navbar div:last-of-type {
-  margin-right: 30px;
+.nav-item {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .submit-button {
   margin-right: 2%
+
+.nav-item a {
+  font-size: 1.4em;
+  color: white;
+  text-decoration: none;
 }
+
+.nav-item a:hover {
+  color: rgb(187, 31, 31);
