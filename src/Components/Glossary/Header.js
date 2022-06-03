@@ -11,7 +11,7 @@ class Header extends React.Component {
   render() {
 
     return (
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar id="top-nav" collapseOnSelect expand="lg" bg="dark" variant="dark">
         <NavItem>
           <Link to="/">Home</Link>
         </NavItem>
