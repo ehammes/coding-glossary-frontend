@@ -82,7 +82,6 @@ class App extends React.Component {
         })
         return true
       } catch (error) {
-        console.log('error ', error);
         if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
           if (error.response.data.term_name_errors && error.response.data.definition_errors) {
             return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, error.response.data.definition_errors)
