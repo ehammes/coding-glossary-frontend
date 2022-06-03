@@ -49,19 +49,35 @@ const UpdateModal = (props) => {
           <Form onSubmit={handleTermSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Term Name</Form.Label>
-              <Form.Control type="text" id="term_name" defaultValue={props.currentTerm.term_name} />
+              <Form.Control
+                type="text"
+                id="term_name"
+                defaultValue={props.currentTerm.term_name}
+                required
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Definition</Form.Label>
-              <Form.Control type="text" id="definition" defaultValue={props.currentTerm.definition} />
+              <Form.Control
+                type="text"
+                id="definition"
+                as="textarea"
+                defaultValue={props.currentTerm.definition}
+                required
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Resource Link</Form.Label>
-              <Form.Control type="text" id="documentation_url" defaultValue={props.currentTerm.documentation_url} />
+              <Form.Control
+                type="text"
+                id="documentation_url"
+                defaultValue={props.currentTerm.documentation_url}
+              />
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
+              className="submit-button"
             >
               Submit
             </Button>
@@ -72,8 +88,6 @@ const UpdateModal = (props) => {
               Delete
             </Button>
           </Form>
-          <Modal.Footer>
-          </Modal.Footer>
         </Modal.Body>
       </Modal>
     </>

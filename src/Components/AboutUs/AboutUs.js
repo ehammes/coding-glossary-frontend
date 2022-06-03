@@ -26,7 +26,7 @@ class AboutUs extends React.Component {
                   <img src="img/profile_square.jpg" alt="Guy's Profile" />
                 </Col>
               </Row>
-              <a class="btn btn-primary" href="https://www.linkedin.com/in/guyefarley/" role="button">LinkedIn</a>
+              <a className="btn btn-primary" href="https://www.linkedin.com/in/guyefarley/" target="_blank" rel="noreferrer" role="button">LinkedIn</a>
             </Card.Body>
           </Card>
         </div>
@@ -45,7 +45,7 @@ class AboutUs extends React.Component {
                   <img src="img/eh_profile.jpg" alt="Elizabeth's Profile" />
                 </Col>
               </Row>
-              <a class="btn btn-primary" href="https://www.linkedin.com/in/elizabethhammes/" role="button">LinkedIn</a>
+              <a className="btn btn-primary" href="https://www.linkedin.com/in/elizabethhammes/" target="_blank" rel="noreferrer" role="button">LinkedIn</a>
             </Card.Body>
           </Card>
         </div>
@@ -64,7 +64,7 @@ class AboutUs extends React.Component {
                   <img src="img/bd_profile.jpg" alt="Brady's Profile" />
                 </Col>
               </Row>
-              <a class="btn btn-primary" href="https://www.linkedin.com/in/bradydavenport/" role="button">LinkedIn</a>
+              <a className="btn btn-primary" href="https://www.linkedin.com/in/bradydavenport/" target="_blank" rel="noreferrer" role="button">LinkedIn</a>
             </Card.Body>
           </Card>
         </div>
@@ -83,7 +83,7 @@ class AboutUs extends React.Component {
                   <img src="img/bs_profile.jpg" alt="Ben's Profile" />
                 </Col>
               </Row>
-              <a class="btn btn-primary" href="https://www.linkedin.com/in/bjgsmall/" role="button">LinkedIn</a>
+              <a className="btn btn-primary" href="https://www.linkedin.com/in/bjgsmall/" target="_blank" rel="noreferrer" role="button">LinkedIn</a>
             </Card.Body>
           </Card>
         </div>
