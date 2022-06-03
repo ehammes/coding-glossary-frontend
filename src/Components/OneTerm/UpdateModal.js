@@ -49,11 +49,11 @@ const UpdateModal = (props) => {
           <Form onSubmit={handleTermSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Term Name</Form.Label>
-              <Form.Control type="text" id="term_name" defaultValue={props.currentTerm.term_name} />
+              <Form.Control type="text" id="term_name" defaultValue={props.currentTerm.term_name} required/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Definition</Form.Label>
-              <Form.Control type="text" id="definition" defaultValue={props.currentTerm.definition} />
+              <Form.Control type="text" id="definition" defaultValue={props.currentTerm.definition} required/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Resource Link</Form.Label>

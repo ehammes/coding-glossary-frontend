@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useAuth0 } from "@auth0/auth0-react"
 
-
 const AddModal = (props) => {
 
   const { user, isAuthenticated } = useAuth0();
@@ -33,11 +32,11 @@ const AddModal = (props) => {
           <Form onSubmit={handleTermSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Term Name</Form.Label>
-              <Form.Control type="text" id="term_name" />
+              <Form.Control type="text" id="term_name" required/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Definition</Form.Label>
-              <Form.Control type="text" id="definition" />
+              <Form.Control type="text" id="definition" required/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Resource Link</Form.Label>

@@ -35,8 +35,11 @@ class Main extends React.Component {
 
     return (
       <div className="main-div">
+        <img src="img/3904529.jpeg" alt="Code Fellows" className="logo"></img>
         <section className="header">
-          <h1 className="main-heading">Code Fellows Glossary</h1>
+          <h1 className="main-heading">
+            Code Fellows Glossary
+          </h1>
           {this.props.auth0.isAuthenticated &&
             <Button
               className="add-button"
@@ -47,7 +50,7 @@ class Main extends React.Component {
             </Button>
           }
         </section>
-        <hr className="hr"/>
+        <hr className="hr" />
         <ListGroup
           className="list-group"
         >
