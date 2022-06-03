@@ -58,7 +58,25 @@ class OneTerm extends React.Component {
             <h1 className="term-title">{this.state.currentTerm.term_name}</h1>
             <hr />
             <p className="supporting-text">{this.state.currentTerm.definition}</p>
-            <p className="supporting-text">{this.state.currentTerm.documentation_url}</p>
+            <p className="supporting-text">
+              {/^http/.test(this.state.currentTerm.documentation_url) ?
+                <a
+                  href={this.state.currentTerm.documentation_url}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {this.state.currentTerm.documentation_url}
+                </a>
+                :
+                <a
+                  href={`http://${this.state.currentTerm.documentation_url}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {this.state.currentTerm.documentation_url}
+                </a>
+              }
+            </p>
           </section>
           <section className="update-button">
             {this.props.auth0.isAuthenticated &&
@@ -82,8 +100,8 @@ class OneTerm extends React.Component {
           </section>
           <section className="view-button">
             <Link to="/">
-              <Button 
-                type="button" 
+              <Button
+                type="button"
                 variant="outline-primary"
               >
                 View All Terms
