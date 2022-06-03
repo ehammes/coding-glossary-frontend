@@ -20,7 +20,8 @@
 }
 
 .submit-button {
-  margin-right: 2%
+  margin-right: 2%;
+}
 
 .nav-item a {
   font-size: 1.4em;
@@ -30,3 +31,4 @@
 
 .nav-item a:hover {
   color: rgb(187, 31, 31);
+}
