@@ -45,14 +45,15 @@ class App extends React.Component {
         this.setState({
           allTerms: [...this.state.allTerms, newTerm.data]
         });
+        return true;
       } catch (error) {
         if (error.response.status === 400 && (error.response.data.term_name_errors || error.response.data.definition_errors)) {
           if (error.response.data.term_name_errors && error.response.data.definition_errors) {
-            this.askUserToOverride(term, true, error.response.data.term_name_errors, error.response.data.definition_errors)
+            return this.askUserToOverride(term, true, error.response.data.term_name_errors, error.response.data.definition_errors)
           } else if (error.response.data.term_name_errors) {
-            this.askUserToOverride(term, true, error.response.data.term_name_errors)
+            return this.askUserToOverride(term, true, error.response.data.term_name_errors, null)
           } else {
-            this.askUserToOverride(term, true, error.response.data.definition_errors)
+            return this.askUserToOverride(term, true, null, error.response.data.definition_errors)
           }
         } else {
           console.log('There has been an error ', error);
@@ -61,64 +62,7 @@ class App extends React.Component {
     } else {
       console.log('Please login for this functionality');
     }
-  }
-
-  askUserToOverride(term, add, arr1, arr2) {
-    let firstIteration = true;
-    let arr1Misspells = arr1.reduce((misspellingList, word) => {
-      if (firstIteration) {
-        firstIteration = false;
-        return word.word;
-      } else {
-        return `${misspellingList}, ${word.word}`;
-      }
-    }, '');
-    firstIteration = true;
-    let arr2Misspells;
-    if (arr2) {
-      arr2Misspells = arr2.reduce((misspellingList, word) => {
-        if (firstIteration) {
-          firstIteration = false;
-          return word.word;
-        } else {
-          return `${misspellingList}, ${word.word}`;
-        }
-      }, '');
-    }
-    let confirmationString;
-    if (arr2) {
-      confirmationString = `You spelled the following words incorrectly\n\n${arr1Misspells}, ${arr2Misspells}\n\n Press OK if you would like to override and submit as is`
-    } else {
-      confirmationString = `You spelled the following words incorrectly\n\n${arr1Misspells}\n\n Press OK if you would like to override and submit as is`
-    }
-    let user_response = window.confirm(confirmationString);
-    if (user_response) {
-      term.override = true;
-      if (add) {
-        this.addTerm(term);
-      } else {
-        return this.updateTerm(term);
-      }
-    }
     return false;
-  }
-
-  // DELETE
-  deleteTerm = async (id) => {
-    if (this.props.auth0.isAuthenticated) {
-      try {
-        const config = await this.getConfig('delete', id)
-        await axios(config);
-        let updatedTermsList = this.state.allTerms.filter(term => term._id !== id)
-        this.setState({
-          allTerms: updatedTermsList
-        })
-      } catch (error) {
-        console.log('There has been an error', error);
-      }
-    } else {
-      console.log('Please login for this functionality');
-    }
   }
 
   // PUT
@@ -143,9 +87,9 @@ class App extends React.Component {
           if (error.response.data.term_name_errors && error.response.data.definition_errors) {
             return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, error.response.data.definition_errors)
           } else if (error.response.data.term_name_errors) {
-            return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors)
+            return this.askUserToOverride(termToUpdate, false, error.response.data.term_name_errors, null)
           } else {
-            return this.askUserToOverride(termToUpdate, false, error.response.data.definition_errors)
+            return this.askUserToOverride(termToUpdate, false, null, error.response.data.definition_errors)
           }
         } else {
           console.log('There has been an error ', error);
@@ -155,6 +99,69 @@ class App extends React.Component {
       console.log('Please login for this functionality');
     }
     return false;
+  }
+
+  askUserToOverride(term, add, arr1, arr2) {
+    let firstIteration = true;
+    let arr1Misspells;
+    if (arr1) {
+      arr1Misspells = arr1.reduce((misspellingList, word) => {
+        if (firstIteration) {
+          firstIteration = false;
+          return word.word;
+        } else {
+          return `${misspellingList}, ${word.word}`;
+        }
+      }, '');
+    }
+    firstIteration = true;
+    let arr2Misspells;
+    if (arr2) {
+      arr2Misspells = arr2.reduce((misspellingList, word) => {
+        if (firstIteration) {
+          firstIteration = false;
+          return word.word;
+        } else {
+          return `${misspellingList}, ${word.word}`;
+        }
+      }, '');
+    }
+    let confirmationString;
+    if (arr1 && arr2) {
+      confirmationString = `Term Name Spelling Errors: ${arr1Misspells}\n\nDefinition Spelling Errors: ${arr2Misspells}\n\nPress OK if you would like to override and submit as is`;
+    } else if (arr1) {
+      confirmationString = `Term Name Spelling Errors: ${arr1Misspells}\n\nPress OK if you would like to override and submit as is`;
+    } else {
+      confirmationString = `Definition Spelling Errors: ${arr2Misspells}\n\nPress OK if you would like to override and submit as is`;
+    }
+    let user_response = window.confirm(confirmationString);
+    if (user_response) {
+      term.override = true;
+      if (add) {
+        return this.addTerm(term);
+      } else {
+        return this.updateTerm(term);
+      }
+    }
+    return false;
+  }
+
+  // DELETE
+  deleteTerm = async (id) => {
+    if (this.props.auth0.isAuthenticated) {
+      try {
+        const config = await this.getConfig('delete', id)
+        await axios(config);
+        let updatedTermsList = this.state.allTerms.filter(term => term._id !== id)
+        this.setState({
+          allTerms: updatedTermsList
+        })
+      } catch (error) {
+        console.log('There has been an error', error);
+      }
+    } else {
+      console.log('Please login for this functionality');
+    }
   }
 
   async getConfig(method, id, body) {
